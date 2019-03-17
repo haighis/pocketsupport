@@ -1,28 +1,36 @@
 {
-  "name": "electron-quick-start",
+  "name": "pocketsupport",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "A minimal Pocket Support Application",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "repository": "https://github.com/haighis/pocketsupport",
   "keywords": [
     "Electron",
     "quick",
     "start",
-    "tutorial",
-    "demo"
+    "pocket",
+    "support"
   ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
+  "author": "John Haigh",
+  "license": "",
   "devDependencies": {
     "electron": "4.1.0",
-    "electron-rebuild": "^1.6.0"
+    "electron-builder": "20.39.0"
   },
   "dependencies": {
     "mongoose": "^4.11.5",
     "nedb": "^1.8.0",
     "nedb-promises": "^3.0.2"
+  },
+  "build": {
+    "appId": "PocketSupport",
+    "mac": {
+      "category": "your.app.category.type"
+    }
   }
 }
