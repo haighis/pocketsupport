@@ -29,6 +29,7 @@
   },
   "build": {
     "appId": "PocketSupport",
+    "extraFiles": ["db/**/*"],
     "mac": {
       "category": "your.app.category.type"
     }

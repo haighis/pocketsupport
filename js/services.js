@@ -12,15 +12,19 @@ angular.module('ngApp.services', [])
     bootstrap : function(){
       
       var app = electron.remote.app;
+      //var userData = app.getAppPath('userData'); 
       var userData = app.getAppPath('userData'); 
+      console.log('in boostrap file path is ', userData)
      db.customers = new Datastore({
-        filename: userData + '/customers.db', // provide a path to the database file 
+        filename: '../db/customers.db', // provide a path to the database file 
+        ///Users/johnhaigh/Projects/icmapp/pocketsupport/
         autoload: true, // automatically load the database
         timestampData: true // automatically add and manage the fields createdAt and updatedAt
       });
 
       db.orders = new Datastore({
-        filename: userData + '/orders.db', // provide a path to the database file 
+        //filename:  '/Users/johnhaigh/Projects/icmapp/pocketsupport/orders.db', // provide a path to the database file 
+        filename:  userData + '../db/orders.db', // provide a path to the database file 
         autoload: true, // automatically load the database
         timestampData: true // automatically add and manage the fields createdAt and updatedAt
       });      
