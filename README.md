@@ -1,6 +1,6 @@
 # Pocket Support
 
-A support desktop app created with Electron, NeDB and AngularJS.
+A support desktop app created with Electron, NeDB and AngularJS. 
 
 This desktop app makes use of the following web technologies and tools:
 
@@ -10,6 +10,10 @@ This desktop app makes use of the following web technologies and tools:
 * Electron Builder
 
 The example demonstrates how to do CRUD (Create-Read-Update-Delete) operations using NeDB.
+
+## Presentation 
+
+https://slides.com/johnhaigh-1/electron-awesome
 
 **Clone and run for a quick way to see Electron in action.**
 
