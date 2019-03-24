@@ -23,7 +23,6 @@
     "electron-builder": "20.39.0"
   },
   "dependencies": {
-    "mongoose": "^4.11.5",
     "nedb": "^1.8.0",
     "nedb-promises": "^3.0.2"
   },
