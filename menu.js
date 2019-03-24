@@ -87,8 +87,8 @@ const template = [
     role: 'help',
     submenu: [
       {
-        label: 'Learn More asdfasdfasdf',
-        click () { require('electron').shell.openExternal('http://electron.atom.io') }
+        label: 'Learn More about Pocket Support',
+        click () { require('electron').shell.openExternal('https://github.com/haighis/pocketsupport') }
       }
     ]
   }
