@@ -9,7 +9,6 @@ function config($stateProvider, $urlRouterProvider) {
         url: '/',
         templateUrl: 'views/home.html',
         controller: 'HomeCtrl',
-        //controllerAs: 'ctrl'
       })    
       .state('support-list', {
         url: '/support-list',
@@ -17,11 +16,8 @@ function config($stateProvider, $urlRouterProvider) {
         controller: 'SupportListCtrl',
         resolve: {
           itemsData: function (NEDBService) {
-            
-            //return InboxService.getMessages();
-            return NEDBService.find('orders',5,100).skip(0).limit(100).then(function(results){
+            return NEDBService.find('support',5,100).skip(0).limit(100).then(function(results){
               return results;
-              console.log('in ui router state resolve', results);
             });
           }
         },
@@ -33,23 +29,7 @@ function config($stateProvider, $urlRouterProvider) {
         controller: 'ProductCreateCtrl',
         controllerAs: 'vm'
       })  
-
-      // .state('location-list', {
-      //   url: '/location-list',
-      //   templateUrl: 'views/location-list.html',
-      //   controller: 'LocationCtrl',
-      //   controllerAs: 'ctrl'
-      // })
-
-      // .state('location-create', {
-      //   url: '/location-create',
-      //   templateUrl: 'views/location-create.html',
-      //   controller: 'LocationCtrl',
-      //   controllerAs: 'ctrl'
-      // })
       $urlRouterProvider.otherwise('/');
-
-    
 }
 
 app.run(run);
@@ -66,32 +46,12 @@ app.controller('SupportListCtrl',function ($scope, $rootScope , NEDBService, ite
 	var vm = this;
   vm.items = [];
   vm.items = itemsData;
-  // var itemsTest = NEDBService.find('orders',5,100);
-  // console.log('in support list ctrl ', itemsTest)
-  
-  // NEDBService.find('orders',5,100).skip(0).limit(100).then(function(results){
-  //   vm.items = results;
-  //   console.log('support list controller loaded', vm.items);
-  // });
-
-  //vm.items = [{title: 'test 1'},{title: 'test 2'}]
-  
-  vm.save = function(item) {
-    console.log('in save order')
-  }
-  
 });
 
 app.controller('ProductCreateCtrl',function ($scope, $rootScope , NEDBService) {
 	var vm = this;
   
   vm.save = function(item) {
-    NEDBService.insert('orders',vm.item)
+    NEDBService.insert('support',vm.item)
   }
 });
-
-// app.controller('LocationCtrl',function ($scope) {
-	
-// 	console.log('location controller loaded');
-
-// });

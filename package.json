@@ -6,7 +6,7 @@
   "scripts": {
     "start": "electron .",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder"
+    "dist": "electron-builder -mlw"
   },
   "repository": "https://github.com/haighis/pocketsupport",
   "keywords": [
@@ -29,7 +29,9 @@
   },
   "build": {
     "appId": "PocketSupport",
-    "extraFiles": ["db/**/*"],
+    "extraFiles": [
+      "db/**/*"
+    ],
     "mac": {
       "category": "your.app.category.type"
     }
