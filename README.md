@@ -26,15 +26,15 @@ You can learn more about each of these components within the [Quick Start Guide]
 ```bash
 # Clone this repository
 git clone https://github.com/haighis/pocketsupport
+
 # Go into the repository
 cd electron-quick-start
+
 # Install dependencies
 npm install
+
 # Run the app
 npm start
-
-# Distribute for single platform
-npm run pack
 
 # Distribute for all platforms
 npm run dist
