@@ -13,7 +13,7 @@ The example demonstrates how to do CRUD (Create-Read-Update-Delete) operations u
 
 ## Presentation 
 
-https://slides.com/johnhaigh-1/electron-awesome
+https://slides.com/johnhaigh-1/electron-nedb-angularjs
 
 **Clone and run for a quick way to see Electron in action.**
 
