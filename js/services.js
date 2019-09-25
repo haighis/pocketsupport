@@ -12,7 +12,10 @@ angular.module('ngApp.services', [])
       var app = electron.remote.app;
       var userData = app.getAppPath('userData'); 
       db.support = new Datastore({
-        filename:  userData + '../db/support.db', // provide a path to the database file 
+        // TODO - For Production use: filename:  userData + '../db/support.db', // provide a path to the database file 
+        //console.log('user Data ', 'file path', userData);
+        // TODO - for dev
+        filename:  'db/support.db', // provide a path to the database file 
         autoload: true, // automatically load the database
         timestampData: true // automatically add and manage the fields createdAt and updatedAt
       });      

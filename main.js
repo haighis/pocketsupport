@@ -1,4 +1,46 @@
 const electron = require('electron')
+
+const {ipcMain} = require('electron');
+
+const ego = require('./ego');
+const auth = ego();
+
+// Attach listener in the main process with the given ID
+ipcMain.on('request-mainprocess-action', (event, arg) => {
+    // Displays the object sent from the renderer process:
+    //{
+    //    message: "Hi",
+    //    someData: "Let's go"
+    //}
+    console.log(
+        arg
+    );
+
+    auth.getAccessToken(
+      ['https://www.googleapis.com/auth/drive.metadata.readonly','https://www.googleapis.com/auth/drive.appdata','https://www.googleapis.com/auth/drive.file'],
+      '', // client id
+      '', // client secret
+      'urn:ietf:wg:oauth:2.0:oob' // redirect uri
+    )
+    .then(token => {
+      console.log(' in get token', JSON.stringify(token))
+      
+    //	app.removeListener('will-quit', preventQuit);
+    //	app.quit();
+    })
+    .catch(err => {
+      console.log('error ' ,err.message);
+    });  
+
+    // Return some data to the renderer process with the mainprocess-response ID
+    //event.sender.send('mainprocess-response', "Hello World!");
+});
+
+//const { ipcRenderer } = require('electron');
+
+//console.log(' in load ', ipcMain)
+//ipcRenderer.on('some-event-2', (evt) => console.log('test from ipc renderer')); // 'Yay'
+
 // Module to control application life.
 const app = electron.app
 // Module to create native browser window.
