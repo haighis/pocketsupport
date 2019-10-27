@@ -1,5 +1,5 @@
 
-var app = angular.module('ngApp',['ui.router','ngApp.services','angular-electron']);
+var app = angular.module('ngApp',['ui.router', 'Issue.UI','angular-electron']);
 app.config(config);
 
 //const ElectronGoogleOAuth2 = require('@getstation/electron-google-oauth2');
@@ -31,8 +31,8 @@ function config($stateProvider, $urlRouterProvider) {
         templateUrl: 'views/support-list.html',
         controller: 'SupportListCtrl',
         resolve: {
-          itemsData: function (NEDBService) {
-            return NEDBService.find('support',5,100).skip(0).limit(100).then(function(results){
+          itemsData: function (IssueService) {
+            return IssueService.find('support',5,100).skip(0).limit(100).then(function(results){
               return results;
             });
           }
@@ -57,24 +57,23 @@ function run($rootScope){
 
 app.controller('HomeCtrl', homeCtrl);
 
-function homeCtrl ($scope, $rootScope , NEDBService, shell) {
-  console.log('in home cgtrl', shell)
-
-  NEDBService.bootstrap();
-
+function homeCtrl ($scope, $rootScope , shell, IssueService) {
+  //console.log('in home cgtrl', shell)
+  IssueService.bootstrap();
 }
 
-app.controller('SupportListCtrl',function ($scope, $rootScope , NEDBService, itemsData) {
+app.controller('SupportListCtrl',function ($scope, $rootScope , IssueService, itemsData) {
 	var vm = this;
   vm.items = [];
+  vm.listOfItems = IssueService.getItems();
   vm.items = itemsData;
 });
 
-app.controller('ProductCreateCtrl',function ($scope, $rootScope , NEDBService, shell, dialog, webContents, webFrame, ipcRenderer) {
+app.controller('ProductCreateCtrl',function ($scope, $rootScope , IssueService, shell, dialog, webContents, webFrame, ipcRenderer) {
 	var vm = this;
   
   vm.save = function(item) {
-    NEDBService.insert('support',vm.item)
+    IssueService.insert('support',vm.item)
   }
 
   vm.login = function() {
@@ -117,7 +116,7 @@ app.controller('ProductCreateCtrl',function ($scope, $rootScope , NEDBService, s
     //});    
   }
 
-  vm.sendToMain = function() {
+  vm.authGoogleDrive = function() {
     //console.log('in send to main webFrame', webFrame, ' ipcRenderer ', ipcRenderer)
 
     // Some data that will be sent to the main process
@@ -135,6 +134,5 @@ app.controller('ProductCreateCtrl',function ($scope, $rootScope , NEDBService, s
     // if a listener has been set, then the main process
     // will react to the request !
     ipcRenderer.send('request-mainprocess-action', Data);
-
   }
 });
