@@ -23,8 +23,7 @@
     "electron-builder": "20.39.0"
   },
   "dependencies": {
-    "@getstation/electron-google-oauth2": "^1.1.2",
-    "angular": "^1.5.8",
+    "angular": "^1.6.0",
     "angular-electron": "^0.2.1",
     "angularjs-issue-ui": "^0.1.0",
     "co": "^4.6.0",
