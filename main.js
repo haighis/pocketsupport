@@ -1,4 +1,77 @@
 const electron = require('electron')
+const {ipcMain} = require('electron');
+const {google} = require('googleapis');
+const ego2 = require('./ego');
+const auth = ego2();
+
+const fs = require('fs');
+const readline = require('readline');
+
+// If modifying these scopes, delete token.json.
+const SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly','https://www.googleapis.com/auth/drive.file'];
+// The file token.json stores the user's access and refresh tokens, and is
+// created automatically when the authorization flow completes for the first
+// time.
+
+// Attach listener in the main process with the given ID
+ipcMain.on('request-mainprocess-action', (event, arg) => {
+    console.log(
+        arg
+    );
+
+    auth.getAccessToken(
+      ['https://www.googleapis.com/auth/drive.metadata.readonly','https://www.googleapis.com/auth/drive.file'],
+      '61840473520-da0fmikphgj7kl1v5sg9332j8qjphja8.apps.googleusercontent.com', // client id
+      '', // client secret TODO. Implement AppJS Auth https://github.com/openid/AppAuth-JS Client secret is not secure here in a desktop application
+      'urn:ietf:wg:oauth:2.0:oob' // redirect uri
+    )
+    .then(code => {
+
+      const oauth2Client = new google.auth.OAuth2(
+        '61840473520-da0fmikphgj7kl1v5sg9332j8qjphja8.apps.googleusercontent.com',
+        '', // client secret TODO. Implement AppJS Auth https://github.com/openid/AppAuth-JS Client secret is not secure here in a desktop application
+        'urn:ietf:wg:oauth:2.0:oob'
+      );
+
+      oauth2Client.getToken(code, (err, token) => {
+        if (err) {
+          return console.error('Error retrieving access token', err);
+        }
+
+			  oauth2Client.setCredentials(token);
+			
+        getFiles(oauth2Client).then(function(someResult) {
+          console.log('in get files ', someResult.data.files)
+        })      
+
+		  });
+    })
+    .catch(err => {
+      console.log('error ' ,err.message);
+    });  
+
+    //Return some data to the renderer process with the mainprocess-response ID
+    event.sender.send('mainprocess-response', "send a response back");
+});
+
+async function getFiles(auth) {
+  let res = await new Promise((resolve, reject) => {
+    const drive = google.drive({version: 'v3', auth});
+    drive.files.list({
+      pageSize: 5,
+      fields: 'files(id, name)',
+      orderBy: 'createdTime desc'
+    }, function (err, res) {
+      if (err) {
+        reject(err);
+      }
+        resolve(res);
+    });
+  });
+  console.log('files are',  res.data);
+  return res;
+}
+
 // Module to control application life.
 const app = electron.app
 // Module to create native browser window.
@@ -34,7 +107,6 @@ function createWindow () {
   })
   
   require('./menu')
-  console.log('in create window')
 }
 
 // This method will be called when Electron has finished

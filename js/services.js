@@ -1,41 +1,58 @@
-angular.module('ngApp.services', [])
-.factory('NEDBService',function(){
+
+var issuesBackend = angular.module('Issue.UI', []);
+
+issuesBackend.factory('IssueService', IssueService);
+
+function IssueService () {
   var Datastore = require('nedb-promises');
   var electron = require('electron');
-  
-  var db = {};
 
-  return {
+  var service = {
+      getItems: getItems,
+      find: find,
+      insert: insert,
+      get: get,
+     // deleteItem: deleteItem,
+      bootstrap: bootstrap
+  };
 
-    bootstrap : function(){
-      
-      var app = electron.remote.app;
-      var userData = app.getAppPath('userData'); 
-      db.support = new Datastore({
-        filename:  userData + '../db/support.db', // provide a path to the database file 
-        autoload: true, // automatically load the database
-        timestampData: true // automatically add and manage the fields createdAt and updatedAt
-      });      
-      return db;
-    },
-    close : function(){
-    },
-    find : function(table,offset,limit){
-      var db = this.bootstrap();
-      return db[table].find({}).sort({
-        updatedAt: -1
-      });
-    },
-   insert: function(table,item){
-     var db = this.bootstrap();
+  return service;
+
+  //var db = {};
+
+  function bootstrap(){  
+    var app = electron.remote.app;
+    var userData = app.getAppPath('userData'); 
+    var db = {};
+    db.support = new Datastore({
+      // TODO - For Production use: filename:  userData + '../db/support.db', // provide a path to the database file 
+      //console.log('user Data ', 'file path', userData);
+      // TODO - for dev
+      filename:  'db/support.db', // provide a path to the database file 
+      autoload: true, // automatically load the database
+      timestampData: true // automatically add and manage the fields createdAt and updatedAt
+    });      
+    return db;
+  }
+
+  function find(table,offset,limit){
+    var db = bootstrap();
+    return db[table].find({}).sort({
+      updatedAt: -1
+    });
+  }
+
+  function insert (table,item){
+    var db = bootstrap();
       db[table].insert(item, function(err, item) {
         if (err) {
           return null;
         }
         return item;
       });
-   }, 
-   get: function (table,id){
+  }
+
+  function get(table,id){
       db[table].findOne({
         _id: id
       }, {}, function(err, item) {
@@ -43,14 +60,31 @@ angular.module('ngApp.services', [])
         return item;
       });
 
-   },
-   delete(table,id){
-      db[table].remove({
-        _id: id
-      }, {}, function(err, item) {
-        if (err) return null;
-        return 1;
-      });
-   }
   }
-});
+
+  function deleteItem(table,id) {
+    db[table].remove({
+      _id: id
+    }, {}, function(err, item) {
+      if (err) return null;
+      return 1;
+    });
+  }
+
+  function getItems() {
+      var items = [
+        {id: 1, name: "test 1"},
+        {id: 2, name: "test 2"}
+      ]
+      return items;
+
+      // var defer = $q.defer();
+      // $http.post(config.URL + '/tenant/'+ 'api/tenant-subscription-creation', accountDto).then(function(success) {
+      //     defer.resolve(success);
+      // }, 
+      // function(error){
+      //     defer.reject(error);
+      // });
+      // return defer.promise;
+  }
+}
