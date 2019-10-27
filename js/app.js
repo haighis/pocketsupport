@@ -2,22 +2,6 @@
 var app = angular.module('ngApp',['ui.router', 'Issue.UI','angular-electron']);
 app.config(config);
 
-//const ElectronGoogleOAuth2 = require('@getstation/electron-google-oauth2');
-//const electron = require('electron')
-
-
-// var googleAuth = require('google-auth-wrapper');
-// var gdriveWrapper = require('google-drive-wrapper');
-
-// googleAuth.execute('./', 'client_secret', function(auth, google) {
-//   var wrapper = new gdriveWrapper(auth, google, 'goodpassword');
-//   wrapper.downloadNewFiles('backups', './download', function(err) {
-//     if(err) {
-//       console.log(err);
-//     }
-//   });
-// });
-
 function config($stateProvider, $urlRouterProvider) {
 
   $stateProvider
@@ -26,10 +10,10 @@ function config($stateProvider, $urlRouterProvider) {
         templateUrl: 'views/home.html',
         controller: 'HomeCtrl',
       })    
-      .state('support-list', {
-        url: '/support-list',
-        templateUrl: 'views/support-list.html',
-        controller: 'SupportListCtrl',
+      .state('issue-list', {
+        url: '/issue-list',
+        templateUrl: 'views/issue-list.html',
+        controller: 'IssueListCtrl',
         resolve: {
           itemsData: function (IssueService) {
             return IssueService.find('support',5,100).skip(0).limit(100).then(function(results){
@@ -39,12 +23,18 @@ function config($stateProvider, $urlRouterProvider) {
         },
         controllerAs: 'vm'
       })  
-      .state('support-create', {
-        url: '/support-create',
-        templateUrl: 'views/support-create.html',
-        controller: 'ProductCreateCtrl',
+      .state('issue-create', {
+        url: '/issue-create',
+        templateUrl: 'views/issue-create.html',
+        controller: 'IssueCreateCtrl',
         controllerAs: 'vm'
-      })  
+      }) 
+      .state('settings', {
+        url: '/settings',
+        templateUrl: 'views/settings.html',
+        controller: 'SettingsCtrl',
+        controllerAs: 'vm'
+      }) 
       $urlRouterProvider.otherwise('/');
 }
 
@@ -62,60 +52,15 @@ function homeCtrl ($scope, $rootScope , shell, IssueService) {
   IssueService.bootstrap();
 }
 
-app.controller('SupportListCtrl',function ($scope, $rootScope , IssueService, itemsData) {
+app.controller('IssueListCtrl',function ($scope, $rootScope , IssueService, itemsData) {
 	var vm = this;
   vm.items = [];
   vm.listOfItems = IssueService.getItems();
   vm.items = itemsData;
 });
 
-app.controller('ProductCreateCtrl',function ($scope, $rootScope , IssueService, shell, dialog, webContents, webFrame, ipcRenderer) {
+app.controller('SettingsCtrl',function ($scope, $rootScope) {
 	var vm = this;
-  
-  vm.save = function(item) {
-    IssueService.insert('support',vm.item)
-  }
-
-  vm.login = function() {
-    shell.beep();
-    console.log('dialog ', dialog)
-
-    //dialog.showMessageBox({ title: 'Error Title', buttonLabel: 'test', message: 'hello world!' });
-    //app.on('ready', () => {
-      // const myApiOauth = ElectronGoogleOAuth2(
-      //   //61840473520-da0fmikphgj7kl1v5sg9332j8qjphja8.apps.googleusercontent.com","project_id":"quickstart-1569165056380","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"neih-4yRIU021PH71aqAw85X","redirect_uris":["urn:ietf:wg:oauth:2.0:oob","http://localhost"]}}
-      //   '61840473520-da0fmikphgj7kl1v5sg9332j8qjphja8.apps.googleusercontent.com',
-      //   'neih-4yRIU021PH71aqAw85X',
-      //   ['https://www.googleapis.com/auth/drive.metadata.readonly']
-      // );
-    
-      // myApiOauth.openAuthWindowAndGetTokens()
-      //   .then(token => {
-      //     // use your token.access_token
-      //   });
-    //});
-  }
-  vm.show = function() {
-    //shell.beep();
-    console.log('dialog ', dialog)
-
-    //dialog.showMessageBox({ title: 'Error Title', buttonLabel: 'test', message: 'hello world!' });
-    dialog.showErrorBox('Error Title', 'test');
-    //app.on('ready', () => {
-      // const myApiOauth = ElectronGoogleOAuth2(
-      //   //61840473520-da0fmikphgj7kl1v5sg9332j8qjphja8.apps.googleusercontent.com","project_id":"quickstart-1569165056380","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://oauth2.googleapis.com/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"neih-4yRIU021PH71aqAw85X","redirect_uris":["urn:ietf:wg:oauth:2.0:oob","http://localhost"]}}
-      //   '61840473520-da0fmikphgj7kl1v5sg9332j8qjphja8.apps.googleusercontent.com',
-      //   'neih-4yRIU021PH71aqAw85X',
-      //   ['https://www.googleapis.com/auth/drive.metadata.readonly']
-      // );
-    
-      // myApiOauth.openAuthWindowAndGetTokens()
-      //   .then(token => {
-      //     // use your token.access_token
-      //   });
-    //});    
-  }
-
   vm.authGoogleDrive = function() {
     //console.log('in send to main webFrame', webFrame, ' ipcRenderer ', ipcRenderer)
 
@@ -134,5 +79,13 @@ app.controller('ProductCreateCtrl',function ($scope, $rootScope , IssueService, 
     // if a listener has been set, then the main process
     // will react to the request !
     ipcRenderer.send('request-mainprocess-action', Data);
+  }
+});
+
+app.controller('IssueCreateCtrl',function ($scope, $rootScope , IssueService, shell, dialog, webContents, webFrame, ipcRenderer) {
+	var vm = this;
+  
+  vm.save = function(item) {
+    IssueService.insert('support',vm.item)
   }
 });
