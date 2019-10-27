@@ -23,8 +23,10 @@
     "electron-builder": "20.39.0"
   },
   "dependencies": {
+    "@uirouter/angularjs": "^0.2.18",
     "angular": "^1.6.0",
     "angular-electron": "^0.2.1",
+    "angular-ui-router": "^0.2.18",
     "angularjs-issue-ui": "^0.1.0",
     "co": "^4.6.0",
     "googleapis": "^39.0.0",
