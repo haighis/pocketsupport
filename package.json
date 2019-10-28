@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@uirouter/angularjs": "^0.2.18",
+    "ag-grid-community": "^21.2.1",
     "angular": "^1.6.0",
     "angular-electron": "^0.2.1",
     "angular-ui-router": "^0.2.18",
