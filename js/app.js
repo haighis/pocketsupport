@@ -1,5 +1,7 @@
 
-var app = angular.module('ngApp',['ui.router', 'Issue.UI','angular-electron']);
+agGrid.initialiseAgGridWithAngular1(angular);
+
+var app = angular.module('ngApp',[,'agGrid','ui.router','Issue.UI','angular-electron']);
 app.config(config);
 
 function config($stateProvider, $urlRouterProvider) {
@@ -55,8 +57,32 @@ function homeCtrl ($scope, $rootScope , shell, IssueService) {
 app.controller('IssueListCtrl',function ($scope, $rootScope , IssueService, itemsData) {
 	var vm = this;
   vm.items = [];
+  vm.gridOptions = {};
+  vm.selectedItem = {title: 'test'};
   vm.listOfItems = IssueService.getItems();
   vm.items = itemsData;
+  
+  var columnDefs = [
+    {headerName: "Title", field: "title"}
+  ];
+
+  vm.columnDefs = columnDefs;
+
+  vm.gridOptions = {
+    defaultColDef: {
+      filter: true
+    },
+    rowSelection: 'single',
+    onSelectionChanged: onSelectionChanged,
+    columnDefs: columnDefs,
+    rowData: itemsData
+  };
+
+   function onSelectionChanged(i) {
+    vm.selectedItem = i.api.getSelectedRows()[0];
+      $scope.$apply(function(error){
+      }); 
+  }
 });
 
 app.controller('SettingsCtrl',function ($scope, $rootScope) {
@@ -87,5 +113,6 @@ app.controller('IssueCreateCtrl',function ($scope, $rootScope , IssueService, sh
   
   vm.save = function(item) {
     IssueService.insert('support',vm.item)
+    vm.item = {};
   }
 });

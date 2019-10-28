@@ -1,8 +1,14 @@
 <h1>
     Issue
     <form name="supportForm" novalidate>
-        <input name="title" type="text" ng-model="vm.item.title" required>
-        <input name="description" type="text" ng-model="vm.item.description" required>
+        <p>
+            Title: <input name="title" type="text" ng-model="vm.item.title" required>
+        </p>
+        <p>
+            Description: <textarea name="description" ng-model="vm.item.description" required>
+                
+            </textarea>
+        </p>
         <button type="button" ng-click="vm.save()">Save</button>
     </form>
 </h1>

@@ -1,8 +1,12 @@
 <h1>
     Issues
-    <ul ng-repeat="item in vm.items">
-        <li>
-            {{item.title}}
-        </li>
-    </ul>
-</h1>
+</h1>    
+<div ag-grid="vm.gridOptions" class="ag-theme-balham" style="height: 500px;"></div>
+<div>
+    <p>
+        Title: {{vm.selectedItem.title}}
+    </p>
+    <p>
+        Description: {{vm.selectedItem.description}}
+    </p>
+</div>
