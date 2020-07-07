@@ -19,7 +19,7 @@
   "author": "John Haigh",
   "license": "",
   "devDependencies": {
-    "electron": "4.1.0",
+    "electron": "7.2.4",
     "electron-builder": "20.39.0"
   },
   "dependencies": {
